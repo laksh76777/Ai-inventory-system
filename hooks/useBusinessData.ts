@@ -5,6 +5,7 @@ import { useAuth } from './useAuth';
 import { getGrocerySeedData } from '../data/grocerySeed';
 import { getElectronicsSeedData } from '../data/electronicsSeed';
 import { getPharmacySeedData } from '../data/pharmacySeed';
+import { getHardwareSeedData } from '../data/hardwareSeed';
 
 const useBusinessData = (): BusinessDataHook => {
   const { currentUser } = useAuth();
@@ -46,6 +47,9 @@ const useBusinessData = (): BusinessDataHook => {
             break;
           case 'laksh2@gmail.com':
             seedData = getPharmacySeedData(userId);
+            break;
+          case 'laksh3@gmail.com':
+            seedData = getHardwareSeedData(userId);
             break;
           default:
             // This is a new user, start with a blank slate

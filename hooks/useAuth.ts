@@ -64,6 +64,19 @@ const seedDemoUsers = () => {
             taxRate: 12,
             businessCategory: 'pharmacy',
             themePreference: 'professional'
+        },
+        'laksh3@gmail.com': {
+            id: 'demo-user-hardware',
+            password: '123456',
+            name: 'Laksh Hardware',
+            shopName: 'Laksh Hardware & Tools',
+            shopLogo: `https://i.pravatar.cc/150?u=laksh-hardware`,
+            shopAddress: '101 Industrial Area, Build Town, 560003',
+            phoneNumber: '9765432109',
+            gstNumber: '29ZYXWV9876E1Z8',
+            taxRate: 18,
+            businessCategory: 'hardware',
+            themePreference: 'professional'
         }
     };
 
@@ -142,7 +155,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const users = getUsersDatabase();
     
     // Prevent demo accounts from being overwritten
-    const demoEmails = ['laksh@gmail.com', 'laksh1@gmail.com', 'laksh2@gmail.com'];
+    const demoEmails = ['laksh@gmail.com', 'laksh1@gmail.com', 'laksh2@gmail.com', 'laksh3@gmail.com'];
     if (demoEmails.includes(normalizedEmail)) {
       return { success: false, error: 'This is a demo account email and cannot be used for new registration.' };
     }

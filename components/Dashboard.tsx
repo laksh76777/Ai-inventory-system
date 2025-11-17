@@ -14,7 +14,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import Button from './ui/Button';
 import Modal from './ui/Modal';
 import AiSuggestionBox from './AiSuggestionBox';
-import ProactiveAiSuggestions from './ProactiveAiSuggestions';
+import ProactiveAiSuggestions from '../ProactiveAiSuggestions';
 import SalesVelocityAlerts from './SalesVelocityAlerts';
 
 // FIX: Replaced `InventoryHook` with `BusinessDataHook`

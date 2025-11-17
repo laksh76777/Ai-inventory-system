@@ -1,12 +1,12 @@
 
+
 import React, { useState, useMemo } from 'react';
 import type { BusinessDataHook, AnyProduct, SaleItem, User, Sale } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
 import Button from './ui/Button';
-import { ShoppingCartIcon, TrashIcon, PlusCircleIcon, ScannerIcon } from './icons/Icons';
+import { ShoppingCartIcon, TrashIcon, PlusCircleIcon } from './icons/Icons';
 import ReceiptModal from './ui/ReceiptModal';
 import Modal from './ui/Modal';
-import BarcodeScanner from '../components/BarcodeScanner';
 
 interface PointOfSaleProps extends BusinessDataHook {
     currentUser: User;
@@ -39,7 +39,6 @@ const PointOfSale: React.FC<PointOfSaleProps> = ({
   const [lastAddedProductId, setLastAddedProductId] = useState<string | null>(null);
   const [errorModalMessage, setErrorModalMessage] = useState<string | null>(null);
   const [quantityErrorId, setQuantityErrorId] = useState<string | null>(null);
-  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
 
   const taxRate = currentUser.taxRate || 0;
@@ -98,15 +97,6 @@ const PointOfSale: React.FC<PointOfSaleProps> = ({
           setBarcodeInput('');
       }
   }
-
-  const handleScan = (barcode: string) => {
-    if (findAndAddProduct(barcode)) {
-      setBarcodeInput(''); // Clear input if product found
-    } else {
-      setBarcodeInput(barcode); // Show scanned barcode in input if not found
-    }
-    setIsScannerOpen(false);
-  };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     const product = products.find(p => p.id === productId);
@@ -210,12 +200,6 @@ const PointOfSale: React.FC<PointOfSaleProps> = ({
           animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
         }
       `}</style>
-      {isScannerOpen && (
-          <BarcodeScanner
-              onScan={handleScan}
-              onClose={() => setIsScannerOpen(false)}
-          />
-      )}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 h-full">
         {/* Barcode Input & Product Grid */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-700/50 p-4 md:p-6 flex flex-col">
@@ -231,9 +215,6 @@ const PointOfSale: React.FC<PointOfSaleProps> = ({
                 className="flex-grow p-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary-500 transition text-lg font-mono"
                 autoFocus
               />
-               <Button type="button" variant="secondary" className="!px-4 !py-3" onClick={() => setIsScannerOpen(true)} aria-label={t('pos.scanner.scan_button_label')}>
-                <ScannerIcon className="w-6 h-6" />
-              </Button>
               <Button type="submit" className="!px-4 !py-3" aria-label={t('pos.add_manually_label')}>
                 <PlusCircleIcon className="w-6 h-6" />
               </Button>

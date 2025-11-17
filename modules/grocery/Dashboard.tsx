@@ -12,7 +12,7 @@ import LanguageSwitcher from '../../components/LanguageSwitcher';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import AiSuggestionBox from '../../components/AiSuggestionBox';
-import ProactiveAiSuggestions from '../../components/ProactiveAiSuggestions';
+import ProactiveAiSuggestions from '../../ProactiveAiSuggestions';
 import SalesVelocityAlerts from '../../components/SalesVelocityAlerts';
 
 interface DashboardProps extends BusinessDataHook {

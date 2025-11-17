@@ -149,13 +149,6 @@
             "price": "Price",
             "total": "Total",
             "thank_you": "Thank you for your purchase!"
-        },
-        "scanner": {
-            "title": "Scan Barcode",
-            "instruction": "Position the product's barcode within the frame.",
-            "not_supported": "Barcode scanning is not supported on this browser.",
-            "camera_error": "Could not access camera. Please grant permission and try again.",
-            "scan_button_label": "Scan barcode with camera"
         }
     },
     "reports": {

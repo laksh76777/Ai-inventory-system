@@ -44,39 +44,39 @@ const Products: React.FC<BusinessDataHook> = ({ products, addProduct, updateProd
 
         <div className="mb-6">
             <input type="text" placeholder="Search by name, brand, or SKU..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-lg p-3 border rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary-500" />
+            className="w-full max-w-lg p-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary-500" />
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg border overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg shadow-slate-200/50 dark:shadow-black/20 border border-slate-200/80 dark:border-slate-800 overflow-hidden">
             <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
                 <thead className="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-800 dark:text-slate-300">
                 <tr>
-                    <th className="px-6 py-4 font-semibold">Product Name</th>
-                    <th className="px-6 py-4 font-semibold">Brand</th>
-                    <th className="px-6 py-4 font-semibold">SKU</th>
-                    <th className="px-6 py-4 font-semibold">Price</th>
-                    <th className="px-6 py-4 font-semibold">Stock</th>
-                    <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                    <th className="px-6 py-4 font-semibold tracking-wider">Product Name</th>
+                    <th className="px-6 py-4 font-semibold tracking-wider">Brand</th>
+                    <th className="px-6 py-4 font-semibold tracking-wider">SKU</th>
+                    <th className="px-6 py-4 font-semibold tracking-wider">Price</th>
+                    <th className="px-6 py-4 font-semibold tracking-wider">Stock</th>
+                    <th className="px-6 py-4 font-semibold tracking-wider text-right">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {filteredProducts.map((p, i) => (
-                    <tr key={p.id} className={`border-b ${i % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50'} hover:bg-slate-100 dark:hover:bg-slate-800`}>
+                    <tr key={p.id} className={`transition-colors border-b border-slate-200/80 dark:border-slate-800 ${i % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50'} hover:bg-slate-100 dark:hover:bg-slate-800`}>
                     <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{p.name}</td>
                     <td className="px-6 py-4">{p.brand}</td>
                     <td className="px-6 py-4 font-mono">{p.sku}</td>
                     <td className="px-6 py-4">₹{p.price.toFixed(2)}</td>
-                    <td className={`px-6 py-4 font-bold ${p.stock <= p.lowStockThreshold ? 'text-rose-500' : ''}`}>{p.stock}</td>
+                    <td className={`px-6 py-4 font-bold ${p.stock <= p.lowStockThreshold ? 'text-rose-500' : 'text-slate-700 dark:text-slate-200'}`}>{p.stock}</td>
                     <td className="px-6 py-4 flex items-center justify-end gap-2">
                         <button onClick={() => openEditModal(p)} className="font-medium text-primary-600 dark:text-primary-400 hover:underline">Edit</button>
-                        <button onClick={() => deleteProduct(p.id)} className="text-slate-500 hover:text-rose-500 p-1.5"><TrashIcon className="w-4 h-4"/></button>
+                        <button onClick={() => deleteProduct(p.id)} className="text-slate-500 hover:text-rose-500 p-1.5 rounded-full hover:bg-rose-100 dark:hover:bg-rose-500/10"><TrashIcon className="w-4 h-4"/></button>
                     </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-            {filteredProducts.length === 0 && <p className="p-10 text-center">No hardware items found.</p>}
+            {filteredProducts.length === 0 && <p className="p-10 text-center text-slate-500 dark:text-slate-400">No hardware items found.</p>}
             </div>
         </div>
         
@@ -100,14 +100,30 @@ const ProductFormModal: React.FC<{
   });
 
   useEffect(() => {
-    if (product) setFormData({ ...product });
-    else setFormData({ name: '', category: 'Tools', price: 0, stock: 0, lowStockThreshold: 10, barcode: '', brand: '', sku: '', dimensions: '', material: '' });
+    if (product) {
+        setFormData({
+            name: product.name, category: product.category, price: product.price, stock: product.stock, 
+            lowStockThreshold: product.lowStockThreshold, barcode: product.barcode, brand: product.brand, 
+            sku: product.sku, dimensions: product.dimensions || '', material: product.material || ''
+        });
+    } else {
+        setFormData({ name: '', category: 'Tools', price: 0, stock: 0, lowStockThreshold: 10, barcode: '', brand: '', sku: '', dimensions: '', material: '' });
+    }
   }, [product]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
-    const finalValue = type === 'number' ? Math.max(0, parseInt(value) || 0) : value;
-    setFormData(prev => ({ ...prev, [name]: finalValue }));
+    let finalValue: string | number = value;
+
+    if (type === 'number') {
+        const parsedValue = parseFloat(value);
+        if (['price'].includes(name)) {
+             finalValue = isNaN(parsedValue) ? 0 : Math.max(0, parsedValue);
+        } else {
+             finalValue = isNaN(parsedValue) ? 0 : Math.max(0, parseInt(value, 10));
+        }
+    }
+    setFormData(prev => ({ ...prev, [name]: finalValue as never }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -117,7 +133,7 @@ const ProductFormModal: React.FC<{
     if (result.success) onClose();
   };
   
-  const formInputStyle = "mt-1 w-full p-2 border rounded-lg bg-white dark:bg-slate-800";
+  const formInputStyle = "mt-1 w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/50";
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={product ? 'Edit Hardware Product' : 'Add New Hardware Product'}>
@@ -128,9 +144,10 @@ const ProductFormModal: React.FC<{
             <input name="sku" placeholder="SKU" value={formData.sku} onChange={handleChange} className={formInputStyle} required />
         </div>
         <input name="barcode" placeholder="Barcode" value={formData.barcode} onChange={handleChange} className={formInputStyle} required />
-        <div className="grid grid-cols-2 gap-4">
-            <input type="number" name="price" placeholder="Price (₹)" value={formData.price} onChange={handleChange} className={formInputStyle} required />
+        <div className="grid grid-cols-3 gap-4">
+            <input type="number" name="price" placeholder="Price (₹)" value={formData.price} onChange={handleChange} className={formInputStyle} required step="0.01" />
             <input type="number" name="stock" placeholder="Stock" value={formData.stock} onChange={handleChange} className={formInputStyle} required />
+            <input type="number" name="lowStockThreshold" placeholder="Low Stock Threshold" value={formData.lowStockThreshold} onChange={handleChange} className={formInputStyle} required />
         </div>
         <div className="grid grid-cols-2 gap-4">
             <input name="dimensions" placeholder="Dimensions (e.g., 10x5x2 cm)" value={formData.dimensions} onChange={handleChange} className={formInputStyle} />
