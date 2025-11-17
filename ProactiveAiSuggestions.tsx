@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { useTranslation } from '../hooks/useTranslation';
-import type { Product, Sale } from '../types';
+// FIX: Replaced `Product` with `AnyProduct` to match the updated type definitions.
+import type { AnyProduct, Sale } from '../types';
 import { LightbulbIcon } from './icons/Icons';
 
 interface ProactiveAiSuggestionsProps {
-  products: Product[];
+  // FIX: Replaced `Product` with `AnyProduct`
+  products: AnyProduct[];
   sales: Sale[];
 }
 
@@ -138,7 +140,7 @@ const ProactiveAiSuggestions: React.FC<ProactiveAiSuggestionsProps> = ({ product
         }
     };
 
-    if (products.length > 0 && sales.length > 0 && process.env.API_KEY) {
+    if (products.length > 0 && sales.length > 0) {
         generateSuggestions();
     } else {
         setIsLoading(false);

@@ -1,21 +1,18 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import type { User } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 // --- Helper Functions for managing the user database in localStorage ---
-
-// A more robust way to get all registered users.
 const getUsersDatabase = (): Record<string, any> => {
     try {
         const usersJson = localStorage.getItem('users');
         return usersJson ? JSON.parse(usersJson) : {};
     } catch (error) {
         console.error("Failed to parse users database from localStorage", error);
-        return {}; // Return empty object on error to prevent crashes
+        return {};
     }
 };
 
-// A dedicated function to save the entire user database.
 const saveUsersDatabase = (users: Record<string, any>) => {
     try {
         localStorage.setItem('users', JSON.stringify(users));
@@ -24,53 +21,64 @@ const saveUsersDatabase = (users: Record<string, any>) => {
     }
 };
 
-
-// --- Initial Seeding for Demo Users ---
-
-const seedInitialUsers = () => {
+// --- Initial Seeding for the three specific Demo Users ---
+const seedDemoUsers = () => {
     const users = getUsersDatabase();
     
-    // Standard Demo User
-    const demoEmail = 'demo@example.com';
-    if (!users[demoEmail]) {
-        users[demoEmail] = {
-            id: 'user-1',
-            email: demoEmail,
-            password: 'password123', // In a real app, this would be hashed
-            name: 'Alex Doe',
-            shopName: 'Alex\'s Corner Shop',
-            shopLogo: `https://i.pravatar.cc/150?u=user-1`,
-            shopAddress: '123 Market Street, Mumbai, Maharashtra, 400001',
-            phoneNumber: '9876543210',
-            gstNumber: '27ABCDE1234F1Z5',
-            taxRate: 5, // 5%
-        };
-    }
-
-    // "Kaggle" Data Analysis User
-    const kaggleEmail = 'laksh@gmail.com';
-    if (!users[kaggleEmail]) {
-        users[kaggleEmail] = {
-            id: 'user-kaggle', // Special ID to identify this user
-            email: kaggleEmail,
+    const demoAccounts = {
+        'laksh@gmail.com': {
+            id: 'demo-user-grocery',
             password: '123456',
             name: 'Laksh',
-            shopName: 'Laksh\'s Grocery Analytics',
-            shopLogo: `https://i.pravatar.cc/150?u=user-kaggle`,
-            shopAddress: '456 Kaggle Drive, Data City, 560001',
+            shopName: 'Laksh\'s Fresh Mart',
+            shopLogo: `https://i.pravatar.cc/150?u=laksh-grocery`,
+            shopAddress: '456 Market Drive, Food City, 560001',
             phoneNumber: '9123456780',
             gstNumber: '29LMNOP5678G1Z9',
             taxRate: 5,
-        };
+            businessCategory: 'grocery',
+            themePreference: 'vibrant'
+        },
+        'laksh1@gmail.com': {
+            id: 'demo-user-electronics',
+            password: '123456',
+            name: 'Laksh Elec',
+            shopName: 'Laksh Electronics',
+            shopLogo: `https://i.pravatar.cc/150?u=laksh-electronics`,
+            shopAddress: '123 Tech Street, Silicon Valley, CA, 95054',
+            phoneNumber: '9876543210',
+            gstNumber: '27ABCDE1234F1Z5',
+            taxRate: 18,
+            businessCategory: 'electronics',
+            themePreference: 'professional'
+        },
+        'laksh2@gmail.com': {
+            id: 'demo-user-pharmacy',
+            password: '123456',
+            name: 'Laksh Pharma',
+            shopName: 'Laksh Wellness Pharmacy',
+            shopLogo: `https://i.pravatar.cc/150?u=laksh-pharmacy`,
+            shopAddress: '789 Health Lane, Med City, 560002',
+            phoneNumber: '9988776655',
+            gstNumber: '29ABCDE1234F1Z6',
+            taxRate: 12,
+            businessCategory: 'pharmacy',
+            themePreference: 'professional'
+        }
+    };
+
+    for (const email in demoAccounts) {
+        if (!users[email]) {
+            users[email] = { email, ...demoAccounts[email as keyof typeof demoAccounts] };
+        }
     }
 
     saveUsersDatabase(users);
 };
-seedInitialUsers();
+seedDemoUsers();
 
 
 // --- Auth Context and Provider ---
-
 interface AuthContextType {
   currentUser: User | null;
   login: (email: string, pass: string, rememberMe: boolean) => { success: boolean; error?: string };
@@ -83,11 +91,9 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    // This logic correctly prioritizes a long-term session over a temporary one.
     try {
       const rememberedUserJson = localStorage.getItem('currentUser');
       if (rememberedUserJson) return JSON.parse(rememberedUserJson);
-      
       const sessionUserJson = sessionStorage.getItem('currentUser');
       return sessionUserJson ? JSON.parse(sessionUserJson) : null;
     } catch (error) {
@@ -101,13 +107,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const users = getUsersDatabase();
     const userData = users[normalizedEmail];
 
-    if (!userData) {
-      return { success: false, error: 'user_not_found' };
-    }
-    
-    if (userData.password !== pass) {
-        return { success: false, error: 'incorrect_password' };
-    }
+    if (!userData) return { success: false, error: 'user_not_found' };
+    if (userData.password !== pass) return { success: false, error: 'incorrect_password' };
 
     const user: User = {
         id: userData.id,
@@ -119,13 +120,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         phoneNumber: userData.phoneNumber,
         gstNumber: userData.gstNumber,
         taxRate: userData.taxRate,
+        businessCategory: userData.businessCategory || 'other',
+        themePreference: userData.themePreference || 'vibrant',
     };
 
-    // Clear any previous session to prevent conflicts.
     localStorage.removeItem('currentUser');
     sessionStorage.removeItem('currentUser');
 
-    // Persist session based on "Remember Me" choice.
     if (rememberMe) {
         localStorage.setItem('currentUser', JSON.stringify(user));
     } else {
@@ -140,38 +141,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const normalizedEmail = details.email.toLowerCase().trim();
     const users = getUsersDatabase();
     
+    // Prevent demo accounts from being overwritten
+    const demoEmails = ['laksh@gmail.com', 'laksh1@gmail.com', 'laksh2@gmail.com'];
+    if (demoEmails.includes(normalizedEmail)) {
+      return { success: false, error: 'This is a demo account email and cannot be used for new registration.' };
+    }
+    
     if (users[normalizedEmail]) {
         return { success: false, error: 'This email is already registered. Please log in instead.' };
     }
     
-    const newUserId = uuidv4();
-    const newUserForDb = {
-        id: newUserId,
-        email: normalizedEmail,
-        password: details.password, // In a real app, this MUST be hashed!
-        name: details.name,
-        shopName: details.shopName,
-        shopLogo: details.shopLogo,
-        shopAddress: details.shopAddress,
-        phoneNumber: details.phoneNumber,
-        gstNumber: details.gstNumber,
-        taxRate: details.taxRate,
-    };
+    const newUserId = `user-${uuidv4()}`;
+    const newUserForDb = { id: newUserId, password: details.password, ...details, email: normalizedEmail };
     users[normalizedEmail] = newUserForDb;
     saveUsersDatabase(users);
 
-    // Automatically log in the new user (session only for new signups)
-    const userForState: User = {
-      id: newUserId,
-      email: normalizedEmail,
-      name: details.name,
-      shopName: details.shopName,
-      shopLogo: details.shopLogo,
-      shopAddress: details.shopAddress,
-      phoneNumber: details.phoneNumber,
-      gstNumber: details.gstNumber,
-      taxRate: details.taxRate,
-    };
+    const { password, ...userForState } = newUserForDb;
     sessionStorage.setItem('currentUser', JSON.stringify(userForState));
     setCurrentUser(userForState);
 
@@ -179,7 +164,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = useCallback(() => {
-    // Ensure logout clears both session types and state.
     localStorage.removeItem('currentUser');
     sessionStorage.removeItem('currentUser');
     setCurrentUser(null);
@@ -187,42 +171,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   
   const updateUser = (details: Partial<User>) => {
     if (!currentUser) return;
-
-    // Normalize email if it's part of the update, though this is unlikely/discouraged
-    const normalizedDetails = details.email 
-        ? { ...details, email: details.email.toLowerCase().trim() }
-        : details;
-
-    const updatedUser = { ...currentUser, ...normalizedDetails };
+    const updatedUser = { ...currentUser, ...details };
     setCurrentUser(updatedUser);
 
-    // Persist the updated user session to the correct storage.
     if (localStorage.getItem('currentUser')) {
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
     } else {
         sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
     }
 
-    // Also update the master user record in the main database.
     const users = getUsersDatabase();
-    const userRecord = users[currentUser.email]; // Find by old email
-    if(userRecord) {
-        const oldEmail = currentUser.email;
-        // Ensure password isn't overwritten if not provided in details
-        const password = userRecord.password;
-        const updatedDetailsForDb = { ...userRecord, ...normalizedDetails, password };
-
-        // Handle logo removal
-        if ('shopLogo' in normalizedDetails && normalizedDetails.shopLogo === undefined) {
-            delete updatedDetailsForDb.shopLogo;
-        }
-
-        // If email has changed, we need to update the key in the database
-        const newEmail = updatedDetailsForDb.email;
-        if (oldEmail !== newEmail) {
-            delete users[oldEmail];
-        }
-        users[newEmail] = updatedDetailsForDb;
+    const userRecord = users[currentUser.email];
+    if (userRecord) {
+        Object.assign(userRecord, details);
         saveUsersDatabase(users);
     }
   };
@@ -234,8 +195,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };

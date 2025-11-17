@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
-import type { Product, Sale } from '../types';
+// FIX: Replaced `Product` with `AnyProduct` to match the updated type definitions.
+import type { AnyProduct, Sale } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
 import { TrendingDownIcon } from './icons/Icons';
 
 interface SalesVelocityAlertsProps {
-  products: Product[];
+  // FIX: Replaced `Product` with `AnyProduct`
+  products: AnyProduct[];
   sales: Sale[];
 }
 

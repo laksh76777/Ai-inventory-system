@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import type { InventoryHook } from '../types';
+import type { BusinessDataHook } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
 import Card from './ui/Card';
-import { RevenueIcon } from './icons/Icons';
+// FIX: The 'RevenueIcon' was not exported. Using 'GroceryRevenueIcon' as 'RevenueIcon' as it's the base icon.
+import { GroceryRevenueIcon as RevenueIcon } from './icons/Icons';
 
 type Period = 'week' | 'month' | 'year';
 
-const Reports: React.FC<InventoryHook> = ({ sales }) => {
+const Reports: React.FC<BusinessDataHook> = ({ sales }) => {
     const { t } = useTranslation();
     const [activePeriod, setActivePeriod] = useState<Period>('week');
 

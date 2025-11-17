@@ -1,5 +1,7 @@
+
 import React from 'react';
 
+// --- Generic Icons ---
 export const DashboardIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="7" height="7"></rect>
@@ -15,22 +17,6 @@ export const ProductsIcon: React.FC<{ className?: string }> = ({ className }) =>
     <line x1="3" y1="6" x2="21" y2="6"></line>
     <path d="M16 10a4 4 0 0 1-8 0"></path>
   </svg>
-);
-
-export const RevenueIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M15 8.5a4 4 0 1 0-4.74-4.74"/>
-        <path d="M5 10h14"/>
-        <path d="M5 15h14"/>
-    </svg>
-);
-
-export const LowStockIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-        <path d="m3.27 6.96 8.73 5.04 8.73-5.04"/>
-        <path d="M12 22.08V12"/>
-    </svg>
 );
 
 export const PosIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -56,7 +42,7 @@ export const ReportsIcon: React.FC<{ className?: string }> = ({ className }) => 
 export const SettingsIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="3"></circle>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2-2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
   </svg>
 );
 
@@ -76,18 +62,164 @@ export const LogoutIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+export const SuppliersIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="8.5" cy="7" r="4"/>
+        <polyline points="17 11 19 13 23 9"/>
+    </svg>
+);
+
+
+// --- Category Specific Icons ---
+export const GroceryProductsIcon: React.FC<{ className?: string }> = ProductsIcon;
+export const GroceryRevenueIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 8.5a4 4 0 1 0-4.74-4.74"/>
+        <path d="M5 10h14"/>
+        <path d="M5 15h14"/>
+    </svg>
+);
+export const GroceryLowStockIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        <path d="m3.27 6.96 8.73 5.04 8.73-5.04"/>
+        <path d="M12 22.08V12"/>
+    </svg>
+);
+export const GroceryExpiringIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
+export const PharmacyProductsIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 3h6"/>
+        <path d="M9 21h6"/>
+        <path d="M11 12h2"/>
+        <path d="M12 11v2"/>
+        <path d="M19.5 15.5 21 14l-1.5-1.5"/>
+        <path d="M4.5 15.5 3 14l1.5-1.5"/>
+        <path d="M15.5 4.5 14 3l1.5-1.5"/>
+        <path d="M15.5 19.5 14 21l1.5 1.5"/>
+        <path d="M8.5 4.5 10 3 8.5 1.5"/>
+        <path d="M8.5 19.5 10 21l-1.5 1.5"/>
+        <path d="M12 6V3"/>
+        <path d="M12 21v-3"/>
+    </svg>
+);
+export const PharmacyRevenueIcon: React.FC<{ className?: string }> = GroceryRevenueIcon;
+export const PharmacyLowStockIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21.5 8.5c.3-1 .2-2.1-.4-3s-1.6-1.5-2.7-1.7c-2.3-.5-4.5.8-5.4 3-1.1-2.4-3.5-3.6-5.8-2.9-2.3.7-3.9 2.9-3.9 5.4 0 4.1 4.1 7.1 9.4 11.2 5.3-4.1 9.4-7.1 9.4-11.2Z"/>
+        <path d="M12 21v-4"/>
+        <path d="M12 6V3"/>
+    </svg>
+);
+export const PharmacyExpiringIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m21.5 2-2.3 2.3"/>
+        <path d="m15.5 2-2.3 2.3"/>
+        <path d="m8.5 2-2.3 2.3"/>
+        <path d="m2.5 2-2.3 2.3"/>
+        <path d="m2.5 22 2.3-2.3"/>
+        <path d="m8.5 22 2.3-2.3"/>
+        <path d="m15.5 22 2.3-2.3"/>
+        <path d="m21.5 22 2.3-2.3"/>
+        <path d="m2 2.5 2.3 2.3"/>
+        <path d="m2 8.5 2.3 2.3"/>
+        <path d="m2 15.5 2.3 2.3"/>
+        <path d="m22 2.5-2.3 2.3"/>
+        <path d="m22 8.5-2.3 2.3"/>
+        <path d="m22 15.5-2.3 2.3"/>
+    </svg>
+);
+
+export const PharmacyBatchIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 8V2l-3 3-3-3-3 3-3-3-3 3-3-3v6"/>
+        <path d="M3 14h18"/>
+        <path d="M12 18h.01"/>
+        <path d="M3 10h18"/>
+        <path d="M18 22H6a2 2 0 0 1-2-2V8"/>
+    </svg>
+);
+
+export const PharmacyPrescriptionIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <path d="m10 14-2 2 2 2"/>
+        <path d="m14 14 2 2-2 2"/>
+    </svg>
+);
+
+export const ElectronicsProductsIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="18" height="18" x="3" y="3" rx="2"/>
+        <path d="M12 8v8"/>
+        <path d="M8 12h8"/>
+    </svg>
+);
+export const ElectronicsRevenueIcon: React.FC<{ className?: string }> = GroceryRevenueIcon;
+export const ElectronicsLowStockIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 12v4h4"/>
+        <path d="M12 17a5 5 0 0 0 5-5V8a5 5 0 0 0-5-5h-1a4 4 0 0 0-4 4v1"/>
+        <path d="M12 21a9 9 0 0 0 9-9h-9v9Z"/>
+    </svg>
+);
+export const ElectronicsExpiringIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10 2h4"/>
+        <path d="M12 14v-4"/>
+        <path d="M14 4h-4v8h4V4Z"/>
+        <path d="M12 22a2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 0-4 0 2.4 2.4 0 0 0 2 1Z"/>
+        <path d="M8 22h8"/>
+        <path d="M6 18h12"/>
+    </svg>
+);
+
+export const ElectronicsValueIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+    </svg>
+);
+
+export const ElectronicsWarrantyIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+);
+
+// --- New Hardware Icons ---
+export const HardwareProductsIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 6v12h1.5a2.5 2.5 0 0 0 0-5h-1.5"/>
+        <path d="m14 12-2-2-2 2"/>
+        <path d="M22 12h-2.5a4.5 4.5 0 0 0-4.5 4.5V22"/>
+        <path d="M2 12h2.5a4.5 4.5 0 0 1 4.5 4.5V22"/>
+    </svg>
+);
+export const HardwareValueIcon: React.FC<{ className?: string }> = ElectronicsValueIcon;
+export const HardwareBrandIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12.5 2.5 10 5l-2.5-2.5L5 5l2.5 2.5L5 10l2.5 2.5L5 15l2.5 2.5L10 15l2.5 2.5L15 15l-2.5-2.5L15 10l-2.5-2.5L15 5l-2.5-2.5z"/>
+    </svg>
+);
+
+
+// --- Utility Icons (Unchanged) ---
 export const WarningIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
     <line x1="12" y1="9" x2="12" y2="13"></line>
     <line x1="12" y1="17" x2="12.01" y2="17"></line>
-  </svg>
-);
-
-export const ExpirationIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
   </svg>
 );
 
@@ -119,6 +251,16 @@ export const BarcodeIcon: React.FC<{ className?: string }> = ({ className }) => 
   <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 6h18M3 10h18M3 14h18M3 18h18" />
   </svg>
+);
+
+export const ScannerIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+        <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+        <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+        <line x1="7" y1="12" x2="17" y2="12" />
+    </svg>
 );
 
 export const PlusCircleIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -207,4 +349,11 @@ export const StopCircleIcon: React.FC<{ className?: string }> = ({ className }) 
     <circle cx="12" cy="12" r="10"></circle>
     <rect x="9" y="9" width="6" height="6"></rect>
   </svg>
+);
+
+export const User: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+    </svg>
 );

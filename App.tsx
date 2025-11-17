@@ -1,32 +1,37 @@
 import React, { useState } from 'react';
 import { useAuth } from './hooks/useAuth';
-import useInventory from './hooks/useInventory';
+import useBusinessData from './hooks/useBusinessData';
 import type { View, SaleItem } from './types';
 
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import Products from './components/Products';
-import PointOfSale from './components/PointOfSale';
-import Reports from './components/Reports';
 import Settings from './components/Settings';
 import AiChatbot from './components/AiChatbot';
 import Footer from './components/Footer';
+import ModuleView from './components/ModuleView'; // Import the new dynamic view handler
+import PointOfSale from './components/PointOfSale';
+import Reports from './components/Reports';
+import Suppliers from './components/Suppliers';
 
 const App: React.FC = () => {
   const [isLoginView, setIsLoginView] = useState(true);
   const { currentUser } = useAuth();
-  const inventory = useInventory(currentUser?.id || null);
+  const businessData = useBusinessData();
   const [currentView, setCurrentView] = useState<View>('dashboard');
-  const [showRevenueCard, setShowRevenueCard] = useState<boolean>(() => {
-    const saved = localStorage.getItem('showRevenueCard');
-    return saved !== null ? JSON.parse(saved) : true;
+  
+  const [uiPreferences, setUiPreferences] = useState(() => {
+    const saved = localStorage.getItem('uiPreferences');
+    return saved ? JSON.parse(saved) : { showRevenueCard: true, showAiSuggestionBox: true };
   });
-  const [showAiSuggestionBox, setShowAiSuggestionBox] = useState<boolean>(() => {
-    const saved = localStorage.getItem('showAiSuggestionBox');
-    return saved !== null ? JSON.parse(saved) : true;
-  });
+
+  const updateUiPreference = (key: string, value: boolean) => {
+    setUiPreferences((prev: any) => {
+      const newState = { ...prev, [key]: value };
+      localStorage.setItem('uiPreferences', JSON.stringify(newState));
+      return newState;
+    });
+  };
 
   // --- POS State Lifted Up ---
   const [posCart, setPosCart] = useState<SaleItem[]>([]);
@@ -40,22 +45,6 @@ const App: React.FC = () => {
   };
   // --- End of Lifted State ---
 
-  const toggleRevenueCard = () => {
-    setShowRevenueCard(prev => {
-        const newState = !prev;
-        localStorage.setItem('showRevenueCard', JSON.stringify(newState));
-        return newState;
-    });
-  };
-
-  const toggleAiSuggestionBox = () => {
-    setShowAiSuggestionBox(prev => {
-        const newState = !prev;
-        localStorage.setItem('showAiSuggestionBox', JSON.stringify(newState));
-        return newState;
-    });
-  };
-
   if (!currentUser) {
     return isLoginView
       ? <LoginPage onSwitchToSignUp={() => setIsLoginView(false)} />
@@ -65,12 +54,11 @@ const App: React.FC = () => {
   const renderView = () => {
     switch (currentView) {
       case 'dashboard':
-        return <Dashboard {...inventory} showRevenueCard={showRevenueCard} showAiSuggestionBox={showAiSuggestionBox} />;
       case 'products':
-        return <Products {...inventory} />;
+        return <ModuleView view={currentView} businessData={businessData} uiPreferences={uiPreferences} />;
       case 'pos':
         return <PointOfSale 
-                  {...inventory} 
+                  {...businessData} 
                   currentUser={currentUser}
                   cart={posCart}
                   setCart={setPosCart}
@@ -81,19 +69,21 @@ const App: React.FC = () => {
                   clearCart={clearPosCart}
                 />;
       case 'reports':
-        return <Reports {...inventory} />;
+        return <Reports {...businessData} />;
+      case 'suppliers':
+        return <Suppliers {...businessData} />;
       case 'ai_chatbot':
-        return <AiChatbot {...inventory} />;
+        return <AiChatbot {...businessData} />;
       case 'settings':
         return <Settings 
-                    showRevenueCard={showRevenueCard} 
-                    onToggleRevenueCard={toggleRevenueCard} 
-                    clearSalesData={inventory.clearSalesData}
-                    showAiSuggestionBox={showAiSuggestionBox}
-                    onToggleAiSuggestionBox={toggleAiSuggestionBox}
+                    showRevenueCard={uiPreferences.showRevenueCard} 
+                    onToggleRevenueCard={() => updateUiPreference('showRevenueCard', !uiPreferences.showRevenueCard)}
+                    clearSalesData={businessData.clearSalesData}
+                    showAiSuggestionBox={uiPreferences.showAiSuggestionBox}
+                    onToggleAiSuggestionBox={() => updateUiPreference('showAiSuggestionBox', !uiPreferences.showAiSuggestionBox)}
                 />;
       default:
-        return <Dashboard {...inventory} showRevenueCard={showRevenueCard} showAiSuggestionBox={showAiSuggestionBox} />;
+        return <ModuleView view="dashboard" businessData={businessData} uiPreferences={uiPreferences} />;
     }
   };
 

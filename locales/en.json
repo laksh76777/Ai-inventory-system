@@ -1,3 +1,4 @@
+
 {
     "common": {
         "cancel": "Cancel",
@@ -6,7 +7,7 @@
         "close": "Close",
         "print": "Print",
         "delete": "Delete",
-        "api_key_not_configured_link": "AI features are disabled. Please configure your API Key in the Settings page."
+        "api_key_not_configured_link": "AI features are currently unavailable. Please try again later."
     },
     "login": {
         "title": "Welcome to Samagra360",
@@ -42,7 +43,8 @@
         "pos": "Point of Sale",
         "reports": "Reports",
         "settings": "Settings",
-        "ai_chatbot": "AI Chatbot"
+        "ai_chatbot": "AI Chatbot",
+        "suppliers": "Suppliers"
     },
     "dashboard": {
         "title": "Dashboard",
@@ -137,6 +139,7 @@
         "scan_or_enter_barcode": "Scan or Enter Barcode",
         "main_instruction": "Scan a product's barcode or enter it manually to add it to the cart.",
         "new_sale_button": "New Sale",
+        "add_manually_label": "Add product manually",
         "receipt": {
             "title": "Sale Receipt",
             "receipt_no": "Receipt No.",
@@ -146,6 +149,13 @@
             "price": "Price",
             "total": "Total",
             "thank_you": "Thank you for your purchase!"
+        },
+        "scanner": {
+            "title": "Scan Barcode",
+            "instruction": "Position the product's barcode within the frame.",
+            "not_supported": "Barcode scanning is not supported on this browser.",
+            "camera_error": "Could not access camera. Please grant permission and try again.",
+            "scan_button_label": "Scan barcode with camera"
         }
     },
     "reports": {
@@ -181,12 +191,6 @@
         "email": "Email Address",
         "tax_config_title": "Tax Configuration",
         "tax_rate": "Default Tax Rate (%)",
-        "ai_config_title": "AI Configuration",
-        "api_key_label": "Gemini API Key",
-        "api_key_placeholder": "Enter your API key",
-        "api_key_description": "Your API key is stored locally in your browser and is never sent to our servers.",
-        "save_key_button": "Save Key",
-        "key_saved_message": "API Key saved!",
         "appearance_title": "Appearance",
         "primary_color": "Primary Color",
         "color_mode": "Color Mode",

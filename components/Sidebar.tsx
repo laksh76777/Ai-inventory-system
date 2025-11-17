@@ -9,7 +9,11 @@ import {
   ReportsIcon,
   SettingsIcon,
   AiIcon,
-  LogoutIcon
+  LogoutIcon,
+  PharmacyProductsIcon,
+  ElectronicsProductsIcon,
+  HardwareProductsIcon,
+  SuppliersIcon
 } from './icons/Icons';
 
 interface SidebarProps {
@@ -17,18 +21,44 @@ interface SidebarProps {
   setCurrentView: (view: View) => void;
 }
 
+const getIconFor = (view: View, category: string, className: string): React.ReactNode => {
+    switch (view) {
+        case 'dashboard':
+            return <DashboardIcon className={className} />;
+        case 'products':
+            if (category === 'pharmacy') return <PharmacyProductsIcon className={className} />;
+            if (category === 'electronics') return <ElectronicsProductsIcon className={className} />;
+            if (category === 'hardware') return <HardwareProductsIcon className={className} />;
+            return <ProductsIcon className={className} />;
+        case 'pos':
+            return <PosIcon className={className} />;
+        case 'reports':
+            return <ReportsIcon className={className} />;
+        case 'suppliers':
+            return <SuppliersIcon className={className} />;
+        case 'ai_chatbot':
+            return <AiIcon className={className} />;
+        case 'settings':
+            return <SettingsIcon className={className} />;
+        default:
+            return <div className={className} />;
+    }
+}
+
 const Sidebar: React.FC<SidebarProps> = ({ currentView, setCurrentView }) => {
   const { currentUser, logout } = useAuth();
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
+  const businessCategory = currentUser?.businessCategory || 'other';
 
-  const navItems: { view: View; label: string; icon: React.ReactNode }[] = [
-    { view: 'dashboard', label: t('sidebar.dashboard'), icon: <DashboardIcon className="w-6 h-6" /> },
-    { view: 'products', label: t('sidebar.products'), icon: <ProductsIcon className="w-6 h-6" /> },
-    { view: 'pos', label: t('sidebar.pos'), icon: <PosIcon className="w-6 h-6" /> },
-    { view: 'reports', label: t('sidebar.reports'), icon: <ReportsIcon className="w-6 h-6" /> },
-    { view: 'ai_chatbot', label: t('sidebar.ai_chatbot'), icon: <AiIcon className="w-6 h-6" /> },
-    { view: 'settings', label: t('sidebar.settings'), icon: <SettingsIcon className="w-6 h-6" /> },
+  const navItems: { view: View; label: string }[] = [
+    { view: 'dashboard', label: t('sidebar.dashboard') },
+    { view: 'products', label: t('sidebar.products') },
+    { view: 'suppliers', label: t('sidebar.suppliers') },
+    { view: 'pos', label: t('sidebar.pos') },
+    { view: 'reports', label: t('sidebar.reports') },
+    { view: 'ai_chatbot', label: t('sidebar.ai_chatbot') },
+    { view: 'settings', label: t('sidebar.settings') },
   ];
 
   return (
@@ -66,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setCurrentView }) => {
             aria-current={currentView === item.view ? 'page' : undefined}
           >
             <span className={currentView === item.view ? 'text-white' : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition'}>
-                {item.icon}
+                {getIconFor(item.view, businessCategory, 'w-6 h-6')}
             </span>
             <span className={`ml-4 whitespace-nowrap transition-opacity ${isExpanded ? 'opacity-100 delay-150 duration-200' : 'opacity-0 pointer-events-none'}`}>{item.label}</span>
           </button>

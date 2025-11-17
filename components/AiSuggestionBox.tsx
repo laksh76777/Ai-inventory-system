@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { useTranslation } from '../hooks/useTranslation';
-import type { Product, Sale } from '../types';
+// FIX: Replaced `Product` with `AnyProduct` to match the updated type definitions.
+import type { AnyProduct, Sale } from '../types';
 import { SparklesIcon } from './icons/Icons';
 import Button from './ui/Button';
 
 interface AiSuggestionBoxProps {
-  products: Product[];
+  // FIX: Replaced `Product` with `AnyProduct`
+  products: AnyProduct[];
   sales: Sale[];
 }
 

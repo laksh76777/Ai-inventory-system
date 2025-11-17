@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import type { InventoryHook, Product } from '../types';
+// FIX: Replaced `InventoryHook` and `Product` with `BusinessDataHook`, `AnyProduct`, and `GroceryProduct`.
+import type { BusinessDataHook, AnyProduct, GroceryProduct } from '../types';
 import Button from './ui/Button';
 import Modal from './ui/Modal';
 import { PlusCircleIcon, TrashIcon, BarcodeIcon } from './icons/Icons';
 import { useTranslation } from '../hooks/useTranslation';
 
-const Products: React.FC<InventoryHook> = ({ products, addProduct, updateProduct, deleteProduct }) => {
+// FIX: Replaced `InventoryHook` with `BusinessDataHook`
+const Products: React.FC<BusinessDataHook> = ({ products, addProduct, updateProduct, deleteProduct }) => {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  // FIX: Replaced `Product` with `AnyProduct`
+  const [editingProduct, setEditingProduct] = useState<AnyProduct | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const openAddModal = () => {
@@ -16,7 +19,8 @@ const Products: React.FC<InventoryHook> = ({ products, addProduct, updateProduct
     setIsModalOpen(true);
   };
   
-  const openEditModal = (product: Product) => {
+  // FIX: Replaced `Product` with `AnyProduct`
+  const openEditModal = (product: AnyProduct) => {
     setEditingProduct(product);
     setIsModalOpen(true);
   };
@@ -89,7 +93,8 @@ const Products: React.FC<InventoryHook> = ({ products, addProduct, updateProduct
                     {Math.max(0, product.stock)}
                   </td>
                   <td className="px-6 py-4 font-mono text-slate-600 dark:text-slate-400">{product.barcode}</td>
-                  <td className="px-6 py-4">{new Date(product.expiryDate).toLocaleDateString('en-IN')}</td>
+                  {/* FIX: Safely access `expiryDate` with a type guard. */}
+                  <td className="px-6 py-4">{'expiryDate' in product && product.expiryDate ? new Date(product.expiryDate).toLocaleDateString('en-IN') : 'N/A'}</td>
                   <td className="px-6 py-4 flex items-center justify-end gap-2">
                     <button onClick={() => openEditModal(product)} className="font-medium text-primary-600 dark:text-primary-400 hover:underline">
                       {t('products.edit_button')}
@@ -125,12 +130,14 @@ const Products: React.FC<InventoryHook> = ({ products, addProduct, updateProduct
 const ProductFormModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  addProduct: (product: Omit<Product, 'id'>) => { success: boolean; error?: string };
-  updateProduct: (product: Product) => { success: boolean; error?: string };
-  product: Product | null;
+  // FIX: Replaced `Product` with `AnyProduct` to match hook type
+  addProduct: (product: Omit<AnyProduct, 'id'>) => { success: boolean; error?: string };
+  updateProduct: (product: AnyProduct) => { success: boolean; error?: string };
+  product: AnyProduct | null;
 }> = ({ isOpen, onClose, addProduct, updateProduct, product }) => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState<Omit<Product, 'id'>>({
+  // FIX: The form is for grocery products, so we explicitly type the state for it.
+  const [formData, setFormData] = useState<Omit<GroceryProduct, 'id' | 'type'>>({
     name: '',
     category: '',
     price: 0,
@@ -149,15 +156,22 @@ const ProductFormModal: React.FC<{
   ];
 
   useEffect(() => {
-    setFormData({
-      name: product?.name || '',
-      category: product?.category || '',
-      price: product?.price || 0,
-      stock: product ? Math.max(0, product.stock) : 0,
-      lowStockThreshold: product?.lowStockThreshold || 10,
-      expiryDate: product?.expiryDate || '',
-      barcode: product?.barcode || '',
-    });
+    // FIX: Safely populate form data only if the product being edited is a grocery-type product.
+    if (product && 'expiryDate' in product) {
+      const p = product as GroceryProduct;
+      setFormData({
+        name: p.name || '',
+        category: p.category || '',
+        price: p.price || 0,
+        stock: p ? Math.max(0, p.stock) : 0,
+        lowStockThreshold: p.lowStockThreshold || 10,
+        expiryDate: p.expiryDate || '',
+        barcode: p.barcode || '',
+      });
+    } else {
+      // Reset form if adding a new product or if an incompatible product type is passed.
+      setFormData({ name: '', category: '', price: 0, stock: 0, lowStockThreshold: 10, expiryDate: '', barcode: '' });
+    }
     setBarcodeError('');
     setFormError('');
   }, [product]);
@@ -202,7 +216,9 @@ const ProductFormModal: React.FC<{
         return;
     }
 
-    const productData = {
+    // FIX: Construct a valid `GroceryProduct` object to send to the hook.
+    const productData: Omit<GroceryProduct, 'id'> = {
+        type: 'grocery',
         ...formData,
         name: formData.name.trim(),
         barcode: formData.barcode.trim(),
@@ -210,7 +226,7 @@ const ProductFormModal: React.FC<{
 
     let result;
     if (product) { // Editing existing product
-        result = updateProduct({ ...product, ...productData });
+        result = updateProduct({ ...productData, id: product.id });
     } else { // Adding new product
         result = addProduct(productData);
     }

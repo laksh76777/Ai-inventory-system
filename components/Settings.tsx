@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from '../hooks/useTranslation';
-import { useTheme } from '../hooks/useTheme';
+// FIX: Imported `ThemeColorName` to resolve type error when updating theme.
+import { useTheme, type ThemeColorName } from '../hooks/useTheme';
 import Button from './ui/Button';
 import Modal from './ui/Modal';
 import { LogoutIcon, ShopIcon } from './icons/Icons';
@@ -195,9 +196,10 @@ const Settings: React.FC<SettingsProps> = ({ showRevenueCard, onToggleRevenueCar
                             <button
                                 key={colorName}
                                 type="button"
-                                onClick={() => updateTheme({ color: colorName })}
+                                // FIX: Cast colorName to ThemeColorName to satisfy the type of updateTheme.
+                                onClick={() => updateTheme({ color: colorName as ThemeColorName })}
                                 className={`w-9 h-9 rounded-full capitalize ring-2 ring-offset-2 dark:ring-offset-slate-900 transition-transform transform hover:scale-110 ${theme.color === colorName ? 'ring-primary-500' : 'ring-transparent'}`}
-                                style={{ backgroundColor: `rgb(${availableColors[colorName]['500']})` }}
+                                style={{ backgroundColor: `rgb(${availableColors[colorName as ThemeColorName]['500']})` }}
                                 aria-label={`Set theme color to ${colorName}`}
                             />
                         ))}
