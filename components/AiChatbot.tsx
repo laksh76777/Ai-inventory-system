@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI, Chat, GenerateContentResponse, LiveServerMessage, Modality, Blob } from "@google/genai";
 import { useTranslation } from '../hooks/useTranslation';
-<<<<<<< HEAD
 import { useApiKey } from '../hooks/useApiKey';
-=======
->>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
 // FIX: Added HardwareProduct to import to use as a type guard.
 import type { BusinessDataHook, AnyProduct, Sale, Supplier, HardwareProduct } from '../types';
 import { AiIcon, MicIcon, StopCircleIcon } from './icons/Icons';
@@ -111,10 +108,7 @@ const getSystemInstruction = (products: AnyProduct[], sales: Sale[], suppliers: 
 
 const AiChatbot: React.FC<BusinessDataHook> = ({ products, sales, suppliers }) => {
   const { t, language } = useTranslation();
-<<<<<<< HEAD
   const { apiKey } = useApiKey();
-=======
->>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
@@ -155,16 +149,12 @@ const AiChatbot: React.FC<BusinessDataHook> = ({ products, sales, suppliers }) =
 
   const initializeTextChat = () => {
     if (!currentUser) return;
-<<<<<<< HEAD
     const finalApiKey = apiKey || process.env.GEMINI_API_KEY;
     if (!finalApiKey) {
       setError('API key not configured. Please set it in Settings.');
       return;
     }
     const ai = new GoogleGenAI({ apiKey: finalApiKey });
-=======
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
->>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
     const systemInstruction = getSystemInstruction(products, sales, suppliers, currentUser.businessCategory);
     chatRef.current = ai.chats.create({ model: 'gemini-2.5-flash', config: { systemInstruction } });
   }
@@ -224,17 +214,13 @@ const AiChatbot: React.FC<BusinessDataHook> = ({ products, sales, suppliers }) =
         inputAudioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
         outputAudioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
         
-<<<<<<< HEAD
-        const finalApiKey = apiKey || process.env.GEMINI_API_KEY;
-        if (!finalApiKey) {
-            setError('API key not configured. Please set it in Settings.');
-            stopVoiceSession();
-            return;
-        }
-        const ai = new GoogleGenAI({ apiKey: finalApiKey });
-=======
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
->>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
+  const finalApiKey = apiKey || process.env.GEMINI_API_KEY;
+  if (!finalApiKey) {
+      setError('API key not configured. Please set it in Settings.');
+      stopVoiceSession();
+      return;
+  }
+  const ai = new GoogleGenAI({ apiKey: finalApiKey });
         const languageName = { en: 'English', hi: 'Hindi', kn: 'Kannada' }[language] || 'English';
         
         const systemInstruction = `${getSystemInstruction(products, sales, suppliers, currentUser.businessCategory)}
