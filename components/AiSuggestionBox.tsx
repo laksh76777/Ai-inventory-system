@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { useTranslation } from '../hooks/useTranslation';
+<<<<<<< HEAD
 import { useApiKey } from '../hooks/useApiKey';
+=======
+>>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
 // FIX: Replaced `Product` with `AnyProduct` to match the updated type definitions.
 import type { AnyProduct, Sale } from '../types';
 import { SparklesIcon } from './icons/Icons';
@@ -20,7 +23,10 @@ interface Advice {
 
 const AiSuggestionBox: React.FC<AiSuggestionBoxProps> = ({ products, sales }) => {
   const { t } = useTranslation();
+<<<<<<< HEAD
   const { apiKey } = useApiKey();
+=======
+>>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
   const [advice, setAdvice] = useState<Advice[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +37,7 @@ const AiSuggestionBox: React.FC<AiSuggestionBoxProps> = ({ products, sales }) =>
     setAdvice(null);
 
     try {
+<<<<<<< HEAD
       const finalApiKey = apiKey || process.env.GEMINI_API_KEY;
       if (!finalApiKey) {
         setError(t('error') || 'API key not configured');
@@ -38,6 +45,9 @@ const AiSuggestionBox: React.FC<AiSuggestionBoxProps> = ({ products, sales }) =>
         return;
       }
       const ai = new GoogleGenAI({ apiKey: finalApiKey });
+=======
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+>>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
 
       // Only include recent sales to keep the prompt concise and relevant
       const oneMonthAgo = new Date();

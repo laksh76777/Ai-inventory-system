@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
+<<<<<<< HEAD
 import { useTranslation } from './hooks/useTranslation';
 import { useApiKey } from './hooks/useApiKey';
 // FIX: Replaced `Product` with `AnyProduct` to match the updated type definitions.
 import type { AnyProduct, Sale } from '../types';
 import { LightbulbIcon } from './components/icons/Icons';
+=======
+import { useTranslation } from '../hooks/useTranslation';
+// FIX: Replaced `Product` with `AnyProduct` to match the updated type definitions.
+import type { AnyProduct, Sale } from '../types';
+import { LightbulbIcon } from './icons/Icons';
+>>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
 
 interface ProactiveAiSuggestionsProps {
   // FIX: Replaced `Product` with `AnyProduct`
@@ -63,7 +70,10 @@ const aggregateSalesByMonth = (sales: Sale[]) => {
 
 const ProactiveAiSuggestions: React.FC<ProactiveAiSuggestionsProps> = ({ products, sales }) => {
   const { t } = useTranslation();
+<<<<<<< HEAD
   const { apiKey } = useApiKey();
+=======
+>>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
   const [suggestions, setSuggestions] = useState<Suggestion[] | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Start in loading state
   const [error, setError] = useState<string | null>(null);
@@ -75,6 +85,7 @@ const ProactiveAiSuggestions: React.FC<ProactiveAiSuggestionsProps> = ({ product
         setSuggestions(null);
 
         try {
+<<<<<<< HEAD
             const finalApiKey = apiKey || process.env.GEMINI_API_KEY;
             if (!finalApiKey) {
                 setError(t('error') || 'API key not configured');
@@ -82,6 +93,9 @@ const ProactiveAiSuggestions: React.FC<ProactiveAiSuggestionsProps> = ({ product
                 return;
             }
             const ai = new GoogleGenAI({ apiKey: finalApiKey });
+=======
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+>>>>>>> a8541f07588bf8bdfadf6b541bc10b9a696e7b1e
             const upcomingFestivals = getUpcomingFestivals();
             const aggregatedSales = aggregateSalesByMonth(sales);
             
