@@ -1,0 +1,234 @@
+
+{
+    "common": {
+        "cancel": "रद्द करें",
+        "save_changes": "बदलाव सहेजें",
+        "add_product": "उत्पाद जोड़ें",
+        "close": "बंद करें",
+        "print": "प्रिंट करें",
+        "delete": "हटाएं",
+        "api_key_not_configured_link": "एआई सुविधाएँ वर्तमान में अनुपलब्ध हैं। कृपया बाद में पुनः प्रयास करें।"
+    },
+    "login": {
+        "title": "समग्र360 में आपका स्वागत है",
+        "email_placeholder": "ईमेल पता",
+        "password_placeholder": "पासवर्ड",
+        "login_button": "लॉगिन करें",
+        "no_account": "खाता नहीं है?",
+        "signup_link": "साइन अप करें",
+        "remember_me": "मुझे याद रखें",
+        "user_not_found": "इस ईमेल पते से कोई खाता नहीं मिला।",
+        "incorrect_password": "गलत पासवर्ड। कृपया पुन: प्रयास करें।",
+        "generic_error": "अमान्य ईमेल या पासवर्ड।"
+    },
+    "signup": {
+        "title": "अपना समग्र360 खाता बनाएं",
+        "shop_name_placeholder": "दुकान का नाम*",
+        "shop_address_placeholder": "दुकान का पता*",
+        "gst_number_placeholder": "जीएसटी नंबर (वैकल्पिक)",
+        "phone_number_placeholder": "फ़ोन नंबर (वैकल्पिक)",
+        "tax_rate_placeholder": "कर दर*",
+        "your_name_placeholder": "आपका नाम*",
+        "email_placeholder": "ईमेल पता*",
+        "password_placeholder": "पासवर्ड*",
+        "signup_button": "खाता बनाएं और लॉगिन करें",
+        "has_account": "पहले से ही खाता है?",
+        "login_link": "लॉगिन करें",
+        "upload_logo": "लोगो अपलोड करें",
+        "email_exists_error": "यह ईमेल पहले से पंजीकृत है। कृपया इसके बजाय लॉगिन करें।"
+    },
+    "sidebar": {
+        "dashboard": "डैशबोर्ड",
+        "products": "उत्पाद",
+        "pos": "बिक्री केंद्र",
+        "reports": "रिपोर्ट",
+        "settings": "सेटिंग्स",
+        "ai_chatbot": "एआई चैटबॉट",
+        "suppliers": "आपूर्तिकर्ता"
+    },
+    "dashboard": {
+        "title": "डैशबोर्ड",
+        "welcome_message": "आपकी दुकान का एक त्वरित अवलोकन यहां दिया गया है।",
+        "total_products": "कुल उत्पाद",
+        "different_items_in_stock": "स्टॉक में विभिन्न वस्तुएं",
+        "total_revenue": "कुल राजस्व",
+        "total_revenue_description_all_time": "सभी पूर्ण बिक्रियों से",
+        "total_revenue_description_since_reset": "{date} से राजस्व",
+        "low_stock_alerts": "कम स्टॉक अलर्ट",
+        "items_needing_restock": "वस्तुएं जिन्हें पुनः स्टॉक करने की आवश्यकता है",
+        "expiring_soon": "जल्द समाप्त हो रहे हैं",
+        "items_expiring_in_30_days": "30 दिनों में समाप्त होने वाली वस्तुएं",
+        "low_stock_products_title": "कम स्टॉक वाले उत्पाद",
+        "all_products_well_stocked": "सभी उत्पाद अच्छी तरह से स्टॉक में हैं!",
+        "stock_left": "केवल {stock} बचे हैं",
+        "expiring_soon_title": "जल्द समाप्त होने वाले उत्पाद",
+        "no_products_expiring_soon": "कोई भी उत्पाद जल्द ही समाप्त नहीं हो रहा है।",
+        "days_left": "{days} दिन शेष",
+        "expires_today": "आज समाप्त हो रहा है",
+        "reset_revenue_button_label": "राजस्व रीसेट करें",
+        "reset_revenue_modal": {
+            "title": "राजस्व डेटा रीसेट करें?",
+            "body": "यह केवल डैशबोर्ड राजस्व काउंटर को रीसेट करेगा। आपकी रिपोर्टें प्रभावित नहीं होंगी।",
+            "confirm_button": "हाँ, राजस्व रीसेट करें"
+        }
+    },
+    "products": {
+        "title": "उत्पाद प्रबंधित करें",
+        "add_button": "नया उत्पाद जोड़ें",
+        "search_placeholder": "नाम, श्रेणी, या बारकोड से खोजें...",
+        "table": {
+            "name": "उत्पाद का नाम",
+            "category": "श्रेणी",
+            "price": "कीमत",
+            "stock": "स्टॉक",
+            "barcode": "बारकोड",
+            "expiry": "समाप्ति तिथि",
+            "actions": "कार्रवाइयाँ"
+        },
+        "edit_button": "संपादित करें",
+        "no_products_found": "कोई उत्पाद नहीं मिला।",
+        "modal": {
+            "add_title": "एक नया उत्पाद जोड़ें",
+            "edit_title": "उत्पाद संपादित करें"
+        },
+        "form": {
+            "name": "उत्पाद का नाम",
+            "category": "श्रेणी",
+            "price": "कीमत (₹)",
+            "stock": "स्टॉक मात्रा",
+            "low_stock_threshold": "न्यूनतम स्टॉक",
+            "barcode": "बारकोड*",
+            "expiry": "समाप्ति तिथि*",
+            "barcode_length_error": "बारकोड 8-13 अंकों का नंबर होना चाहिए।",
+            "product_name_exists": "इस नाम का उत्पाद पहले से मौजूद है।",
+            "barcode_exists": "यह बारकोड पहले से ही दूसरे उत्पाद को सौंपा गया है।"
+        },
+        "categories": {
+            "select": "एक श्रेणी चुनें...",
+            "grocery": "किराना",
+            "dairy": "डेयरी",
+            "bakery": "बेकरी",
+            "beverages": "पेय पदार्थ",
+            "snacks": "स्नैक्स",
+            "produce": "ताजा उपज",
+            "pantry": "पेंट्री",
+            "grains": "अनाज",
+            "electronics": "इलेक्ट्रानिक्स",
+            "clothes": "कपड़े",
+            "stationery": "स्टेशनरी",
+            "household": "घरेलू सामान"
+        }
+    },
+    "pos": {
+        "search_placeholder": "उत्पाद बारकोड दर्ज करें या स्कैन करें...",
+        "stock_label": "स्टॉक",
+        "no_products_found": "कोई मेल खाने वाला उत्पाद नहीं मिला या स्टॉक खत्म हो गया है।",
+        "cart_title": "वर्तमान बिक्री",
+        "cart_empty": "आपकी कार्ट खाली है। बिक्री शुरू करने के लिए उत्पाद जोड़ें।",
+        "subtotal_label": "उप-योग",
+        "tax_label": "कर ({taxRate}%)",
+        "total_label": "कुल",
+        "discount_label": "छूट",
+        "discount_applied": "छूट लागू",
+        "complete_sale_button": "बिक्री पूरी करें और बिल प्रिंट करें",
+        "product_not_found_alert": "इस बारकोड वाला उत्पाद नहीं मिला।",
+        "product_out_of_stock_alert": "यह उत्पाद वर्तमान में स्टॉक में नहीं है।",
+        "out_of_stock_message": "\"{productName}\" स्टॉक में नहीं है।",
+        "max_stock_in_cart_message": "\"{productName}\" के लिए और स्टॉक नहीं है। आपके कार्ट में पहले से ही {quantity} हैं।",
+        "modal_error_title": "त्रुटि",
+        "scan_or_enter_barcode": "बारकोड स्कैन या दर्ज करें",
+        "main_instruction": "कार्ट में जोड़ने के लिए किसी उत्पाद का बारकोड स्कैन करें या उसे मैन्युअल रूप से दर्ज करें।",
+        "new_sale_button": "नई बिक्री",
+        "add_manually_label": "उत्पाद को मैन्युअल रूप से जोड़ें",
+        "receipt": {
+            "title": "बिक्री रसीद",
+            "receipt_no": "रसीद संख्या",
+            "date": "दिनांक",
+            "item": "वस्तु",
+            "qty": "मात्रा",
+            "price": "कीमत",
+            "total": "कुल",
+            "thank_you": "आपकी खरीद के लिए धन्यवाद!"
+        }
+    },
+    "reports": {
+        "title": "बिक्री रिपोर्ट",
+        "sales_over_time": "बिक्री राजस्व",
+        "revenue": "राजस्व",
+        "top_selling_products": "सबसे ज्यादा बिकने वाले उत्पाद (मात्रा के अनुसार)",
+        "top_selling_products_period": "सबसे ज्यादा बिकने वाले उत्पाद ({period})",
+        "units_sold": "{quantity} इकाइयां बिकीं",
+        "total_revenue": "कुल राजस्व",
+        "no_sales_data": "रिपोर्ट बनाने के लिए कोई बिक्री डेटा उपलब्ध नहीं है।",
+        "period": {
+            "this_week": "यह सप्ताह",
+            "this_month": "यह महीना",
+            "this_year": "यह वर्ष"
+        },
+        "todays_revenue": "आज का राजस्व",
+        "this_months_revenue": "इस महीने का राजस्व",
+        "this_years_revenue": "इस वर्ष का राजस्व",
+        "summary_description": "पूर्ण हुई बिक्री पर आधारित"
+    },
+    "settings": {
+        "title": "सेटिंग्स",
+        "shop_profile_title": "दुकान प्रोफाइल",
+        "change_logo": "लोगो बदलें",
+        "remove_logo": "हटाएं",
+        "shop_name": "दुकान का नाम",
+        "shop_address": "दुकान का पता",
+        "phone_number": "फ़ोन नंबर",
+        "gst_number": "जीएसटी नंबर",
+        "profile_title": "आपकी प्रोफाइल",
+        "your_name": "आपका नाम",
+        "email": "ईमेल पता",
+        "tax_config_title": "कर कॉन्फ़िगरेशन",
+        "tax_rate": "डिफ़ॉल्ट कर दर (%)",
+        "appearance_title": "दिखावट",
+        "primary_color": "प्राथमिक रंग",
+        "color_mode": "कलर मोड",
+        "mode_light": "लाइट",
+        "mode_dark": "डार्क",
+        "mode_system": "सिस्टम",
+        "saved_message": "बदलाव सफलतापूर्वक सहेजे गए!",
+        "account_actions": "खाता कार्रवाइयाँ",
+        "logout_description": "अपने वर्तमान सत्र से लॉग आउट करें।",
+        "logout_button": "लॉगआउट करें",
+        "dashboard_widgets": "डैशबोर्ड विजेट",
+        "show_revenue_card": "'कुल राजस्व' कार्ड दिखाएं",
+        "show_ai_suggestion_box": "'एआई-संचालित सलाह' कार्ड दिखाएं",
+        "data_management_title": "डेटा प्रबंधन",
+        "clear_sales_data_button": "सभी बिक्री डेटा साफ़ करें",
+        "clear_sales_data_description": "सभी बिक्री इतिहास को स्थायी रूप से हटाएं। यह आपकी रिपोर्ट को रीसेट कर देगा। यह क्रिया पूर्ववत नहीं की जा सकती।",
+        "clear_sales_modal": {
+            "title": "सभी बिक्री डेटा साफ़ करें?",
+            "body": "क्या आप वाकई सभी बिक्री डेटा को स्थायी रूप से हटाना चाहते हैं? आपकी रिपोर्ट खाली हो जाएगी और इस क्रिया को उलटा नहीं किया जा सकता है।",
+            "confirm_button": "हाँ, डेटा हटाएं"
+        }
+    },
+    "ai_chatbot": {
+        "title": "एआई इन्वेंटरी विश्लेषक",
+        "description": "मुझसे अपने उत्पादों, बिक्री और स्टॉक के बारे में कुछ भी पूछें।",
+        "initial_message": "नमस्ते! मैं आपका एआई-संचालित इन्वेंटरी विश्लेषक हूँ। आज मैं आपकी दुकान के डेटा का विश्लेषण करने में कैसे मदद कर सकता हूँ? उदाहरण के लिए, आप पूछ सकते हैं 'कौन से उत्पाद सबसे अच्छा बिक रहे हैं?' या 'पिछले सप्ताह की मेरी बिक्री का सारांश दें'।",
+        "placeholder": "अपनी इन्वेंट्री के बारे में एक प्रश्न पूछें...",
+        "error": "क्षमा करें, मुझे एक त्रुटि का सामना करना पड़ा। कृपया पुनः प्रयास करें।"
+    },
+    "ai_suggestion_box": {
+        "title": "एआई-संचालित सलाह",
+        "description": "अपने वर्तमान इन्वेंट्री और बिक्री डेटा के आधार पर स्मार्ट सुझाव प्राप्त करें।",
+        "button": "अंतर्दृष्टि उत्पन्न करें",
+        "loading": "आपके डेटा का विश्लेषण किया जा रहा है...",
+        "error": "सलाह उत्पन्न नहीं की जा सकी। कृपया बाद में पुनः प्रयास करें।"
+    },
+    "proactive_ai_suggestions": {
+        "title": "रणनीतिक एआई अंतर्दृष्टि",
+        "description": "ऐतिहासिक डेटा और आगामी घटनाओं के आधार पर सक्रिय सलाह प्राप्त करें।",
+        "button": "विश्लेषण और सुझाव दें",
+        "loading": "गहन विश्लेषण किया जा रहा है...",
+        "error": "सुझाव उत्पन्न नहीं किए जा सके। कृपया बाद में पुनः प्रयास करें।"
+    },
+    "sales_velocity_alerts": {
+        "title": "बिक्री वेग चेतावनी",
+        "item_alert": "\"{productName}\" की बिक्री पिछले 30 दिनों में {previousCount} से घटकर {currentCount} इकाई हो गई है।"
+    }
+}

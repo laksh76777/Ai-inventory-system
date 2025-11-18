@@ -1,0 +1,196 @@
+import React, { useState, useEffect, useMemo } from 'react';
+// FIX: Imported `GroceryProduct` to use in a type predicate.
+import type { BusinessDataHook, GroceryProduct } from '../../types';
+import Card from '../../components/ui/Card';
+import { 
+    WarningIcon, CheckCircleIcon, ResetIcon,
+    GroceryProductsIcon, GroceryRevenueIcon, GroceryLowStockIcon, GroceryExpiringIcon
+} from '../../components/icons/Icons';
+import { useTranslation } from '../../hooks/useTranslation';
+import { useAuth } from '../../hooks/useAuth';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import Button from '../../components/ui/Button';
+import Modal from '../../components/ui/Modal';
+import AiSuggestionBox from '../../components/AiSuggestionBox';
+import ProactiveAiSuggestions from '../../ProactiveAiSuggestions';
+import SalesVelocityAlerts from '../../components/SalesVelocityAlerts';
+
+interface DashboardProps extends BusinessDataHook {
+  showRevenueCard: boolean;
+  showAiSuggestionBox: boolean;
+}
+
+const getDashboardIcons = () => ({
+    Products: GroceryProductsIcon,
+    Revenue: GroceryRevenueIcon,
+    LowStock: GroceryLowStockIcon,
+    Expiring: GroceryExpiringIcon,
+});
+
+
+const Dashboard: React.FC<DashboardProps> = ({ products, sales, resetDashboardRevenue, revenueResetTimestamp, showRevenueCard, showAiSuggestionBox }) => {
+  const { t, language } = useTranslation();
+  const { currentUser } = useAuth();
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  
+  const Icons = getDashboardIcons();
+  // FIX: Used a type predicate to correctly type `groceryProducts` as `GroceryProduct[]`.
+  const groceryProducts = products.filter((p): p is GroceryProduct => p.type === 'grocery');
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentDateTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const getLocaleForLanguage = (lang: string) => {
+    return { 'hi': 'hi-IN', 'kn': 'kn-IN' }[lang] || 'en-GB';
+  }
+
+  const formattedDate = currentDateTime.toLocaleDateString(getLocaleForLanguage(language), { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const formattedTime = currentDateTime.toLocaleTimeString(getLocaleForLanguage(language), { hour: '2-digit', minute: '2-digit', hour12: true });
+  
+  const totalProducts = groceryProducts.length;
+
+  const { totalRevenue, revenueDescription } = useMemo(() => {
+    const filteredSales = revenueResetTimestamp ? sales.filter(s => new Date(s.date) >= new Date(revenueResetTimestamp)) : sales;
+    const total = filteredSales.reduce((sum, sale) => sum + sale.total, 0);
+    const description = revenueResetTimestamp
+        ? t('dashboard.total_revenue_description_since_reset').replace('{date}', new Date(revenueResetTimestamp).toLocaleDateString(getLocaleForLanguage(language)))
+        : t('dashboard.total_revenue_description_all_time');
+    return { totalRevenue: total, revenueDescription: description };
+  }, [sales, revenueResetTimestamp, t, language]);
+  
+  const lowStockProducts = groceryProducts.filter(p => p.stock <= p.lowStockThreshold);
+
+  const getDaysUntilExpiry = (expiryDate: string) => {
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+    expiry.setHours(23, 59, 59, 999);
+    return Math.floor((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  };
+  
+  const expiringSoonProducts = groceryProducts
+    .filter(p => {
+        const daysLeft = getDaysUntilExpiry(p.expiryDate);
+        return daysLeft >= 0 && daysLeft <= 30;
+    })
+    .sort((a, b) => getDaysUntilExpiry(a.expiryDate) - getDaysUntilExpiry(b.expiryDate));
+    
+  const handleResetRevenue = () => {
+    resetDashboardRevenue();
+    setIsConfirmModalOpen(false);
+  }
+  
+  const aiGridCols = showAiSuggestionBox ? 'lg:grid-cols-2' : 'lg:grid-cols-1';
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8">
+        <div>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('dashboard.title')}</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-1">{t('dashboard.welcome_message')}</p>
+        </div>
+        <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
+            <LanguageSwitcher />
+            <div className="text-right flex-shrink-0 bg-white dark:bg-slate-900 rounded-lg px-4 py-2 shadow-sm border border-slate-200 dark:border-slate-800">
+                <p className="font-semibold text-sm text-slate-800 dark:text-slate-200 whitespace-nowrap">{formattedDate}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs text-right">{formattedTime}</p>
+            </div>
+        </div>
+      </div>
+
+      <div className={`grid grid-cols-1 md:grid-cols-2 ${showRevenueCard ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6 mb-8`}>
+        <Card title={t('dashboard.total_products')} value={totalProducts.toString()} description={t('dashboard.different_items_in_stock')} icon={<Icons.Products />} />
+        {showRevenueCard && (
+          <Card title={t('dashboard.total_revenue')} value={`₹${totalRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} description={revenueDescription} icon={<Icons.Revenue />} action={
+              <button onClick={() => setIsConfirmModalOpen(true)} className="p-1.5 rounded-full text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-white transition" aria-label={t('dashboard.reset_revenue_button_label')}><ResetIcon className="w-4 h-4" /></button>
+            }/>
+        )}
+        <Card title={t('dashboard.low_stock_alerts')} value={lowStockProducts.length.toString()} description={t('dashboard.items_needing_restock')} isWarning={lowStockProducts.length > 0} icon={<Icons.LowStock />}/>
+        <Card title={t('dashboard.expiring_soon')} value={expiringSoonProducts.length.toString()} description={t('dashboard.items_expiring_in_30_days')} isWarning={expiringSoonProducts.length > 0} icon={<Icons.Expiring />}/>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg shadow-slate-200/50 dark:shadow-black/20 border border-slate-200/80 dark:border-slate-800">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 p-5 border-b border-slate-200 dark:border-slate-800 flex items-center"><WarningIcon className="mr-3 text-rose-500" /> {t('dashboard.low_stock_products_title')}</h2>
+          <div className="p-3">
+            {lowStockProducts.length === 0 ? (
+              <div className="text-center py-8">
+                <CheckCircleIcon className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
+                <p className="text-slate-500 dark:text-slate-400">{t('dashboard.all_products_well_stocked')}</p>
+              </div>
+            ) : (
+              <ul className="space-y-1 max-h-80 overflow-y-auto p-2">
+                {lowStockProducts.map((product) => (
+                  <li key={product.id} className="flex justify-between items-center p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
+                    <div>
+                      <p className="font-semibold text-slate-900 dark:text-white">{product.name}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{product.category}</p>
+                    </div>
+                    <div className="text-right">
+                        <p className="text-rose-500 font-bold text-lg">{Math.max(0, product.stock)}</p>
+                        <p className="text-xs text-slate-400">of {product.lowStockThreshold}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg shadow-slate-200/50 dark:shadow-black/20 border border-slate-200/80 dark:border-slate-800">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 p-5 border-b border-slate-200 dark:border-slate-800 flex items-center"><Icons.Expiring className="mr-3 text-amber-500" /> {t('dashboard.expiring_soon_title')}</h2>
+          <div className="p-3">
+            {expiringSoonProducts.length === 0 ? (
+              <div className="text-center py-8">
+                 <CheckCircleIcon className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
+                 <p className="text-slate-500 dark:text-slate-400">{t('dashboard.no_products_expiring_soon')}</p>
+              </div>
+            ) : (
+                <ul className="space-y-1 max-h-80 overflow-y-auto p-2">
+                {expiringSoonProducts.map((product) => {
+                  const daysLeft = getDaysUntilExpiry(product.expiryDate);
+                  const isUrgent = daysLeft <= 7;
+                  const urgencyText = daysLeft === 0 ? t('dashboard.expires_today') : t('dashboard.days_left').replace('{days}', daysLeft.toString());
+                  return (
+                    <li key={product.id} className={`flex justify-between items-center p-3 rounded-lg transition-colors hover:bg-slate-100 dark:hover:bg-slate-800/50 ${isUrgent ? 'bg-rose-50 dark:bg-rose-500/10' : ''}`}>
+                      <div>
+                        <p className="font-semibold text-slate-900 dark:text-white">{product.name}</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{new Date(product.expiryDate).toLocaleDateString('en-IN')}</p>
+                      </div>
+                      <p className={`font-semibold text-sm px-2 py-1 rounded-full ${isUrgent ? 'bg-rose-100 text-rose-800 dark:bg-rose-500/20 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300'}`}>
+                          {urgencyText}
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className={`mt-8 grid grid-cols-1 ${aiGridCols} gap-8`}>
+        {showAiSuggestionBox && <AiSuggestionBox products={products} sales={sales} />}
+        <ProactiveAiSuggestions products={products} sales={sales} />
+      </div>
+
+      <div className="mt-8"><SalesVelocityAlerts products={products} sales={sales} /></div>
+
+      {isConfirmModalOpen && (
+          <Modal isOpen={isConfirmModalOpen} onClose={() => setIsConfirmModalOpen(false)} title={t('dashboard.reset_revenue_modal.title')}>
+              <div className="text-center">
+                  <p className="text-slate-600 dark:text-slate-300 mb-6">{t('dashboard.reset_revenue_modal.body')}</p>
+                   <div className="flex justify-center gap-4">
+                        <Button variant="secondary" onClick={() => setIsConfirmModalOpen(false)}>{t('common.cancel')}</Button>
+                        <Button onClick={handleResetRevenue} className="!bg-red-600 hover:!bg-red-700 focus-visible:!ring-red-500">{t('dashboard.reset_revenue_modal.confirm_button')}</Button>
+                    </div>
+              </div>
+          </Modal>
+      )}
+    </div>
+  );
+};
+
+export default Dashboard;
